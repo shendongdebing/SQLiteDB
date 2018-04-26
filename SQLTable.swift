@@ -258,10 +258,10 @@ class SQLTable: NSObject, SQLTableProtocol {
 		let data = values()
 		if let rid = data[key] {
 			var params: [Any]? = [true, Date()]
-			var sql = "UPDATE \(table) SET isDeleted = ?, modified = ? WHERE \(primaryKey())=\(rid)"
+			var sql = "UPDATE \(table) SET isDeleted = ?, modified = ? WHERE \(primaryKey())='\(rid)'"
 			if force {
 				params = nil
-				sql = "DELETE FROM \(table) WHERE \(primaryKey())=\(rid)"
+				sql = "DELETE FROM \(table) WHERE \(primaryKey())='\(rid)'"
 			}
 			let rc = db.execute(sql:sql, parameters: params)
 			return (rc != 0)
@@ -274,7 +274,7 @@ class SQLTable: NSObject, SQLTableProtocol {
 		let key = primaryKey()
 		let data = values()
 		if let rid = data[key] {
-			let sql = "SELECT * FROM \(table) WHERE \(primaryKey())=\(rid)"
+			let sql = "SELECT * FROM \(table) WHERE \(primaryKey())='\(rid)'"
 			let arr = db.query(sql:sql)
 			for (key, _) in data {
 				if let val = arr[0][key] {
